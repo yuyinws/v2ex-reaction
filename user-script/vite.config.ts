@@ -13,11 +13,13 @@ export default defineConfig({
         icon: 'https://vitejs.dev/logo.svg',
         namespace: 'npm/vite-plugin-monkey',
         match: ['*://*.v2ex.com/t/*'],
+        name: 'v2ex-reaciton',
       },
       build: {
         externalGlobals: {
           vue: cdn.jsdelivr('Vue', 'dist/vue.global.prod.js'),
         },
+        fileName: 'v2ex-reaction.user.js',
       },
     }),
     turboConsole(),
