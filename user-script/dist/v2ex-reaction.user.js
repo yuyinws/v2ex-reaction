@@ -23,7 +23,7 @@
     const authURL = vue.ref("");
     async function genAuthURL() {
       const href = window.location.href;
-      const response = await fetch(`http://localhost:3000/authorize?app_return_url=${href}`);
+      const response = await fetch(`https://v2ex-reaction.vercel.app/authorize?app_return_url=${href}`);
       const data = await response.text();
       authURL.value = data;
     }
@@ -66,7 +66,7 @@
   function useReaction() {
     async function getReaction() {
       const token2 = localStorage.getItem("emoji-reaction-token");
-      const response = await fetch(`http://localhost:3000/getDiscussion?token=${token2}`);
+      const response = await fetch(`https://v2ex-reaction.vercel.app/getDiscussion?token=${token2}`);
       const data = await response.json();
       const reactionGroups = data.response.data.repository.discussion.reactionGroups;
       const discussionId = data.response.data.repository.discussion.id;
