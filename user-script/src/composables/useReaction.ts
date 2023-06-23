@@ -17,7 +17,7 @@ const totalCount = computed(() => {
 export function useReaction() {
   async function getReaction() {
     const token = localStorage.getItem('emoji-reaction-token')
-    const response = await fetch(`http://localhost:3000/getDiscussion?token=${token}`)
+    const response = await fetch(`https://v2ex-reaction.vercel.app/getDiscussion?token=${token}`)
     const data = await response.json()
     const reactionGroups = data.response.data.repository.discussion.reactionGroups
     const discussionId = data.response.data.repository.discussion.id

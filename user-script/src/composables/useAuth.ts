@@ -9,7 +9,7 @@ export function useAuth() {
 
   async function genAuthURL() {
     const href = window.location.href
-    const response = await fetch(`http://localhost:3000/authorize?app_return_url=${href}`)
+    const response = await fetch(`https://v2ex-reaction.vercel.app/authorize?app_return_url=${href}`)
     const data = await response.text()
     authURL.value = data
   }
