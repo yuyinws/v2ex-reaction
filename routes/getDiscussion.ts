@@ -1,31 +1,40 @@
-export default defineEventHandler(async (eventHandler) => {
-  // 使用GitHub GraphQL API获取仓库的讨论的reaciton
-  const response = await $fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    body: {
-      query: `
-      query {
-        repository(owner: "yuyinws", name: "v2ex-reaction") {
-          discussion(number: 1) {
-            id
-            reactionGroups {
-              content
-              users {
-                totalCount
+export default defineEventHandler(async (event) => {
+  try {
+    const origin = event.node.req.headers.origin
+    if (origin.includes('v2ex.com')) {
+      setHeader(event, 'Access-Control-Allow-Origin', origin)
+      const { token } = getQuery(event) as { token: string }
+      const response = await $fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        body: {
+          query: `
+        query {
+          repository(owner: "yuyinws", name: "v2ex-reaction") {
+            discussion(number: 1) {
+              id
+              reactionGroups {
+                content
+                users {
+                  totalCount
+                }
+                viewerHasReacted
               }
-              viewerHasReacted
             }
           }
         }
-      }
-      `,
-    },
-    headers: {
-      Authorization: 'Bearer ',
-    },
-  })
+        `,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-  return {
-    response,
+      return {
+        response,
+      }
+    }
+  }
+  catch (error) {
+
   }
 })

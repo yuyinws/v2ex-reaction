@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
     const client_secret = CLIENT_SECRET
     const { code, state } = getQuery(event) as { code: string; state: string }
     const app_return_url = await decodeState(state, ENCRYPTION_PASSWORD)
-    const response = await $fetch('https://github.com/login/oauth/access_token', {
+    const response = await $fetch<Promise<{ access_token: string }>>('https://github.com/login/oauth/access_token', {
       method: 'POST',
       body: {
         client_id,
@@ -18,9 +18,10 @@ export default defineEventHandler(async (event) => {
       },
     })
 
-    return {
-      response,
-    }
+    const returnUrl = new URL(app_return_url)
+    returnUrl.searchParams.set('emoji-reaction-token', response.access_token)
+
+    return sendRedirect(event, returnUrl.href, 302)
   }
   catch (error) {
     return {

@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nitro dev",
+    "dev:user-script": "pnpm -r dev:script",
     "build": "nitro build"
   },
   "devDependencies": {
