@@ -22,3 +22,8 @@
 本项目高度受到[giscus](https://github.com/giscus/giscus)的启发，因此工作原理与giscus基本一致。
 
 每个v2ex的帖子会在本仓库的[discussions](https://github.com/yuyinws/v2ex-reaction/discussions/categories/v2ex)中有一个对应的帖子(如果不存在则会由bot自动创建)，所有reaction数据都与discussion保持一致。
+
+### 限制
+- 由于依赖于GitHub Discussion，所以emoji的种类也只能与GitHub保持一致，无法自定义。
+
+- GitHub Discussion 可能有数量上的限制。
