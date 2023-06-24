@@ -14,6 +14,7 @@ export default defineConfig({
         namespace: 'npm/vite-plugin-monkey',
         match: ['*://*.v2ex.com/t/*'],
         name: 'v2ex-reaciton',
+        author: 'yuyinws',
       },
       build: {
         externalGlobals: {
