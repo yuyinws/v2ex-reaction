@@ -21,6 +21,8 @@ export function useReaction() {
     try {
       loading.value = true
       const pathname = window.location.pathname
+      if (pathname.includes('review'))
+        return
       const token = localStorage.getItem('emoji-reaction-token')
       const url = new URL(`${serverDomin}/getDiscussion`)
       if (token)

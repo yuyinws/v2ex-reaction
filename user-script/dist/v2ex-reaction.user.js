@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         v2ex-reaciton
 // @namespace    npm/vite-plugin-monkey
-// @version      0.1.0
+// @version      0.1.1
 // @author       yuyinws
 // @description  给v2ex增加emoji reaction功能
 // @license      MIT
@@ -74,6 +74,8 @@
       try {
         loading.value = true;
         const pathname = window.location.pathname;
+        if (pathname.includes("review"))
+          return;
         const token2 = localStorage.getItem("emoji-reaction-token");
         const url = new URL(`${serverDomin}/getDiscussion`);
         if (token2)
