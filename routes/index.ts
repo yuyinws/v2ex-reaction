@@ -1,3 +1,3 @@
 export default defineEventHandler((event) => {
-  return sendRedirect(event, 'https://github/yuyinws/v2ex-reaction', 302)
+  return sendRedirect(event, 'https://github.com/yuyinws/v2ex-reaction', 302)
 })
