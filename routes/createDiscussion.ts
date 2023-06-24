@@ -6,40 +6,40 @@ export default defineEventHandler(async (event) => {
     if (origin?.includes('v2ex.com'))
       setHeader(event, 'Access-Control-Allow-Origin', origin)
 
-    let { token, pathname } = getQuery(event) as { token: string; pathname: string }
-
-    if (!token) {
-      const response = await accessTokenFetch
-      token = response.token
-    }
-
+    const { pathname } = getQuery(event) as { pathname: string }
     if (!pathname)
       throw new Error('pathname is required')
+
+    const { token } = await accessTokenFetch
+    const { data: discussionData } = await $fetch<Promise<{ data: any }>>('/getDiscussion', {
+      params: {
+        pathname,
+      },
+    })
+
+    if (discussionData.search.discussionCount > 0)
+      throw new Error('discussion already exists')
+
     const { data } = await $fetch<Promise<{ data: any }>>('https://api.github.com/graphql', {
       method: 'POST',
       body: JSON.stringify({
         query: `
-          query($query: String!) {
-            search(type: DISCUSSION last: 1 query: $query) {
-              discussionCount
-              nodes {
-                ... on Discussion {
-                  id
-                  url
-                  reactionGroups {
-                    content
-                    users {
-                      totalCount
-                    }
-                    viewerHasReacted
-                  }
-                }
-              }
+        mutation($input: CreateDiscussionInput!) {
+          createDiscussion(input: $input) {
+            discussion {
+              id
+              url
             }
           }
-        `,
+        }
+      `,
         variables: {
-          query: `repo:yuyinws/v2ex-reaction category:v2ex in:title ${pathname}`,
+          input: {
+            repositoryId: 'R_kgDOJy8j8g',
+            categoryId: 'DIC_kwDOJy8j8s4CXbz6',
+            title: pathname,
+            body: `[v2ex原帖](https://v2ex.com${pathname})`,
+          },
         },
       }),
       headers: {
@@ -48,8 +48,8 @@ export default defineEventHandler(async (event) => {
     })
 
     return {
-      data,
       state: 'ok',
+      data,
     }
   }
   catch (error) {

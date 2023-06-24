@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import type { Reaction } from '../types'
-import { emojiMap } from '../utils/constantce'
+import { emojiMap, serverDomin } from '../utils/constantce'
 
 const reactions = ref<Reaction[]>([])
 const subjectId = ref('')
@@ -15,21 +15,60 @@ const totalCount = computed(() => {
 })
 
 export function useReaction() {
+  const discussionUrl = ref('')
+  const loading = ref(false)
   async function getReaction() {
-    const token = localStorage.getItem('emoji-reaction-token')
-    const response = await fetch(`https://v2ex-reaction.vercel.app/getDiscussion?token=${token}`)
-    const data = await response.json()
-    const reactionGroups = data.response.data.repository.discussion.reactionGroups
-    const discussionId = data.response.data.repository.discussion.id
-    subjectId.value = discussionId
-    reactions.value = reactionGroups.map((reaction: any) => {
-      return {
-        content: reaction.content,
-        totalCount: reaction.users.totalCount,
-        viewerHasReacted: reaction.viewerHasReacted,
-        emoji: emojiMap[reaction.content],
+    try {
+      loading.value = true
+      const pathname = window.location.pathname
+      const token = localStorage.getItem('emoji-reaction-token')
+      const url = new URL(`${serverDomin}/getDiscussion`)
+      if (token)
+        url.searchParams.append('token', token as string)
+      if (pathname)
+        url.searchParams.append('pathname', pathname)
+
+      const response = await fetch(url.toString())
+      const { data, state } = await response.json()
+      if (state === 'fail')
+        throw new Error(data)
+
+      const reactionNodes = data.search.nodes
+
+      if (!reactionNodes.length) {
+        const createUrl = new URL(`${serverDomin}/createDiscussion`)
+        if (pathname)
+          createUrl.searchParams.append('pathname', pathname)
+        const res = await fetch(createUrl)
+        const createData = await res.json()
+        if (createData.state === 'ok') {
+          setTimeout(() => {
+            getReaction()
+          }, 2000)
+        }
       }
-    })
+      else {
+        const reactionGroups = reactionNodes[0].reactionGroups
+        const discussionId = reactionNodes[0].id
+        const _discussionUrl = reactionNodes[0].url
+        subjectId.value = discussionId
+        discussionUrl.value = _discussionUrl
+        reactions.value = reactionGroups.map((reaction: any) => {
+          return {
+            content: reaction.content,
+            totalCount: reaction.users.totalCount,
+            viewerHasReacted: reaction.viewerHasReacted,
+            emoji: emojiMap[reaction.content],
+          }
+        })
+      }
+    }
+    catch (error) {
+      console.log(error)
+    }
+    finally {
+      loading.value = false
+    }
   }
 
   const TOGGLE_REACTION_QUERY = (mode: 'add' | 'remove') => `
@@ -42,8 +81,10 @@ export function useReaction() {
     }
   }`
 
-  async function clickReaction(content: string, token: string, viewerHasReacted: boolean) {
+  async function clickReaction(isAuth: boolean, content: string, token: string, viewerHasReacted: boolean) {
     try {
+      if (!isAuth)
+        return
       await fetch('https://api.github.com/graphql', {
         method: 'POST',
         headers: {
@@ -72,5 +113,7 @@ export function useReaction() {
     filteredReactions,
     totalCount,
     clickReaction,
+    discussionUrl,
+    loading,
   }
 }

@@ -8,3 +8,5 @@ export const emojiMap: Record<string, string> = {
   ROCKET: '🚀',
   EYES: '👀',
 }
+
+export const serverDomin = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://v2ex-reaction.vercel.app'

@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { getSearchParam } from '../utils/tools'
+import { serverDomin } from '../utils/constantce'
 
 const token = ref('')
+const authURL = ref('')
+const isAuth = ref(false)
 
 export function useAuth() {
-  const isAuth = ref(false)
-  const authURL = ref('')
-
   async function genAuthURL() {
     const href = window.location.href
-    const response = await fetch(`https://v2ex-reaction.vercel.app/authorize?app_return_url=${href}`)
+    const response = await fetch(`${serverDomin}/authorize?app_return_url=${href}`)
     const data = await response.text()
     authURL.value = data
   }
