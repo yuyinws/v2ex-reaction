@@ -15,6 +15,9 @@ export default defineConfig({
         match: ['*://*.v2ex.com/t/*'],
         name: 'v2ex-reaciton',
         author: 'yuyinws',
+        license: 'MIT',
+        description: '给v2ex增加emoji reaction功能',
+        iconURL: 'https://www.v2ex.com/static/favicon.ico',
       },
       build: {
         externalGlobals: {

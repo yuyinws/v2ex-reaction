@@ -1,11 +1,14 @@
 // ==UserScript==
-// @name       v2ex-reaciton
-// @namespace  npm/vite-plugin-monkey
-// @version    0.1.0
-// @author     yuyinws
-// @icon       https://vitejs.dev/logo.svg
-// @match      *://*.v2ex.com/t/*
-// @require    https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.global.prod.js
+// @name         v2ex-reaciton
+// @namespace    npm/vite-plugin-monkey
+// @version      0.1.0
+// @author       yuyinws
+// @description  给v2ex增加emoji reaction功能
+// @license      MIT
+// @icon         https://vitejs.dev/logo.svg
+// @iconURL      https://www.v2ex.com/static/favicon.ico
+// @match        *://*.v2ex.com/t/*
+// @require      https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.global.prod.js
 // ==/UserScript==
 
 (o=>{const e=document.createElement("style");e.dataset.source="vite-plugin-monkey",e.textContent=o,document.head.append(e)})(' :root{--emojir-text-primary: #24292f}@media (prefers-color-scheme: dark){:root{--emojir-text-primary: #f5f5f5}}.emoji-reaction{display:flex;flex-direction:column;align-items:center;gap:1rem;margin:1rem 0;flex-wrap:wrap}.emoji-title{font-size:14px;font-weight:600;cursor:pointer;color:var(--emojir-text-primary)}.emoji-face-icon:before,.emoji-face-icon::-webkit-details-marker{display:none}.emoji-face-icon::marker{content:""}.emoji-face-icon{height:100%;width:100%;display:flex;justify-content:center;align-items:center;cursor:pointer}.emoji-list{display:flex;gap:5px}.emoji-menu{position:relative;background:#f6f8fa;border:1px solid #d0d7de;border-radius:50%;width:24px;height:24px}.emoji-menu:hover{background:#eaeef2}.emoji-panel-list{display:flex;flex-wrap:wrap;gap:.3rem}.emoji-panel{padding:.5rem;position:absolute;z-index:10;box-shadow:0 0 10px #0000001a;border-radius:.5rem;background-color:#fff;display:flex;flex-wrap:wrap;width:9.5rem}.emoji-panel-login{font-size:12px;color:#2563eb!important;font-style:italic}.emoji-item{padding:.5rem;width:1rem;height:1rem;cursor:pointer;border-radius:3px;display:flex;justify-content:center;align-items:center}.emoji-item:hover{background:#f3f4f6;font-size:20px;transition:font-size .2s ease-in-out}.emoji-item-reacted{background:#ddf4ff}.emoji-counter{padding:0 4px;font-size:12px;border-radius:100px;background:red;height:24px;width:34px;line-height:24px;background:#fff;border:1px solid #d1d5db;cursor:pointer;color:#222}.emoji-counter:hover{background:#eaeef2}.emoji-counter-reacted{background:#ddf4ff;border:1px solid #0969da}.emoji-counter-reacted:hover{background:#b6e3ff}.emoji-item-disabled{cursor:not-allowed;opacity:.5} ');
