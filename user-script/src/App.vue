@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
   <div v-if="loading">
-    Loading
+    <img width="50" style="margin-top:1rem" height="50" src="https://raw.githubusercontent.com/yuyinws/v2ex-reaction/main/source/loading.gif" alt="loading" srcset="">
   </div>
   <div v-else>
     <div class="emoji-reaction">

@@ -57,7 +57,7 @@ function handleClickOutside() {
               isAuth ? '' : 'emoji-item-disabled',
             ]"
             class="emoji-item"
-            @click="clickReaction(isAuth, item.content, token, item.viewerHasReacted)"
+            @click="clickReaction(isAuth, item.content, token, item.viewerHasReacted, handleClickOutside)"
           >
             {{ item.emoji }}
           </div>

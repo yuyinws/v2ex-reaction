@@ -81,7 +81,7 @@ export function useReaction() {
     }
   }`
 
-  async function clickReaction(isAuth: boolean, content: string, token: string, viewerHasReacted: boolean) {
+  async function clickReaction(isAuth: boolean, content: string, token: string, viewerHasReacted: boolean, cb?: () => void) {
     try {
       if (!isAuth)
         return
@@ -104,6 +104,9 @@ export function useReaction() {
     }
     catch (error) {
       console.log(error)
+    }
+    finally {
+      cb()
     }
   }
 
